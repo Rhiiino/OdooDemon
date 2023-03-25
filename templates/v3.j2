@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Odoo Demon</title>
+    <link rel="stylesheet" href="static/css/v3.css">
+    <script type="text/javascript" src="static/js/v3.js"></script>
+  </head>
+
+  <body>
+
+    <div id='title'>
+        <div id='test1'><span id='t1'>o</span><span id='t2'>doo</span><span id='t3'>Demon</span> </p> </div>
+        <div id='test2'> <img src="static/img/demonlogo_2.png" /> </div>
+    </div>
+
+
+
+
+    <section class="card-list">
+
+        <!--Testing-->
+        <article class="card">
+          <div>
+            <!--Close card button-->
+            <div class="close_card">X</div>
+
+            <!-- Card Title -->
+            <header class="card-header">
+                <p># 1</p>
+                <h2>Upgrade Module</h2>
+            </header>
+
+            <!-- Module dropdown -->
+            <div id='module_select'>
+                <select name="installed_modules" id="installed_modules">
+                    <option value="">Select a module</option>
+                </select>
+            </div>
+
+            <!-- Upgrade Button -->
+            <button id='upgrade_button'><h1>Upgrade</h1></button>
+
+            <!-- Notification box -->
+            <div id='notification_box'>
+              Select a module to upgrade.
+            </div>
+ 
+          </div>
+        </article>
+
+
+
+
+        <!-- Plus Card -->
+        <article class="card" id='plus_card'>
+            <!--Front of card-->
+            <div id='front'>
+                <!--Card Title-->
+                <header class="card-header" id='plus_card_title'>
+                    <p># 0</p>
+                    <h2>Add Command</h2>
+                </header>
+                <!--Image-->
+                <div id='plus_card_img'>
+                    <img src="static/img/demonlogo_2.png" />
+                </div>
+            </div>
+
+            <!--Back of card-->
+            <div id='back'>
+               <h2>SELECT COMMAND</h2>
+               <ul id="command_list">
+                    <li>Restart Server</li>
+                    <li>Upgrade Module</li>
+                    <li>Reset View</li>
+                    <li>Blast Off</li>
+                    <li>Ice Age</li>
+               </ul>
+            </div>
+        </article>
+
+
+        
+
+    </section>
+
+  </body>
+
+</html>

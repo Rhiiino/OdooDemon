@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #17141d;
+    color: white;
+    font-family: 'DM Mono', monospace;
+}
+
+
+/* ----- Title elements ---------------------------------------- */
+#title{
+    width: 400px;
+    display: flex;
+    font-size: 50px;
+    font-weight: bold;
+    color: green;
+    font-size: 50px;
+    margin: 20px auto;
+}
+#title > div:nth-child(1){
+    width: 70%;
+}
+#title > div:nth-child(2){
+    width: 30%;
+}
+#title > div:nth-child(2) > img{
+    width: 60px;
+    height: 60px;
+}
+#t1{
+    color: #800080;
+}
+#t2{
+    color: grey;
+}
+#t3{
+    color: rgb(180, 82, 82);
+}
+
+
+
+
+
+/* ----- Add card + elements ---------------------------------------- */
+#plus_card:hover{ 
+    box-shadow: 0rem 0 2rem rgb(177, 87, 171);    /*Shadows cast by cards*/
+    transform: rotateY(180deg);
+}
+  
+#plus_card:hover #front{        /*Hides front side when card is hovered over*/
+    display: none;
+}
+#plus_card:hover #back{        /*Displays back side when card is hovered over*/
+    display: block;
+    transform: rotateY(180deg);
+}
+#back{
+    display: none;
+    text-align: center;
+    color: rgb(180, 82, 82);
+}
+#plus_card_title{
+    text-align: center;
+}
+/*Front card img*/
+#plus_card_img{  
+    padding: 50px;
+    text-align: center;
+}
+#plus_card_img > img{
+    height: 150px;
+    width: 150px;
+}
+/*Back card (Command list)*/
+#command_list{
+    list-style-type: none;
+    text-align: left;   
+}
+#command_list > li{
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    padding: 5px;
+}
+#command_list > li:hover{
+    border-radius: 20px;
+    width: 75%;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    padding: 5px;
+    background-color: rgb(180, 82, 82);
+    box-shadow: 0rem 0 2rem rgb(180, 82, 82);
+    transform: translate(-10px);
+}
+
+
+
+
+
+/* ----- Card elements ---------------------------------------- */
+/* Mine: */
+
+/* Base: */
+a {
+    text-decoration: none;
+}
+.card-list {
+    display: flex;
+    padding: 3rem;
+    overflow-x: scroll;
+}
+.card-list::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.card-list::-webkit-scrollbar-thumb {
+    background: #201c29;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 2px hsla(0,0%,100%,.25), inset -2px -2px 2px rgba(0,0,0,.25);
+}
+.card-list::-webkit-scrollbar-track {
+    background: linear-gradient(90deg,#201c29,#201c29 1px,#17141d 0,#17141d);
+}
+.card {
+    text-align: center;
+    margin: auto;
+    height: 350px;
+    width: 300px;
+    min-width: 250px;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: #17141d;
+    box-shadow: 0rem 0 2rem rgb(255, 255, 255);    /*Shadows cast by cards*/
+    display: flex;
+    flex-direction: column;
+    transition: .2s;
+    scroll-snap-align: start;
+    clear: both;
+    position: relative;
+}
+.card:focus-within~.card, .card:hover~.card {  /* Shifts all postceding cards to the right */
+    transform: translateX(130px);
+}
+.card:hover {  /*Translates the card being hovered over slightly upwards*/
+    transform: translateY(-1rem);
+}
+.card:not(:first-child) {
+    margin-left: -130px;
+}
+.card-header {
+    margin-bottom: auto;
+}
+.card-header p {
+    font-size: 14px;
+    margin: 0 0 1rem;
+    color: #7a7a8c;
+}
+.card-header h2 {
+    font-size: 25px;
+    margin: .25rem 0 auto;
+    text-decoration: none;
+    color: inherit;
+    border: 0;
+    display: inline-block;
+    cursor: pointer;
+}
+.card-header h2:hover {
+    background: linear-gradient(90deg,#ff8a00,#e52e71);
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+
+
+
+/* ----- Close card button ---------------------------------------- */
+.close_card{
+    padding: 0px;
+    margin: 0px;
+}
+
+
+
+
+/* ----- Module select dropdown ---------------------------------------- */
+#module_select{ /* Div container for select */
+    margin-top: 30px;
+    border-radius: 25px;
+    height: 30px;
+    width: 300px;
+    /* box-shadow: 0rem 0 2rem rgb(180, 82, 82); */
+}
+#module_select > select{ /* Select dropdown */
+    border-radius: 25px;
+    width: 200px;
+    height: 100%;
+}
+#module_select > select > option{ /* Select dropdown */
+    padding: 10px;
+    font-size: 15px;
+    font-family: 'DM Mono', monospace;
+}
+#module_select > select > option:nth-child(1){ /* Select dropdown */
+    text-align: center;
+}
+
+
+
+/* ----- Upgrade button ---------------------------------------- */
+#upgrade_button{
+    font-size: 18px;
+    font-family: 'DM Mono', monospace;
+    height: 40px;
+    width: 150px;
+    border-radius: 25px;
+    margin-top: 10px;
+}
+#upgrade_button>h1{
+    margin: auto;
+}
+#upgrade_button:hover{
+    background-color: #b949b9;
+    box-shadow: 0rem 0 2rem #ba2fba;
+}
+
+
+
+/* ----- Notification box ---------------------------------------- */
+#notification_box{
+    margin: 30px;
+    height: 100px;
+    border-radius: 30px;
+    color: rgb(255, 255, 255);
+    padding: 15px;
+    background-color: rgb(182, 182, 182);
+    box-shadow: 0rem 0 1rem rgb(255, 255, 255);
+    word-wrap: break-word;
+}
+
+
+
+
+
+
+/* ----- Pulse Animation Effects ---------------------------------------- */
+@keyframes pulse_effect_red{
+    0% {
+        box-shadow: 0rem 0 1rem rgba(92, 33, 33, 0.4);
+    }
+    25% {
+        box-shadow: 0rem 0 2rem rgba(123, 30, 30, 0.4);
+        }
+    50% {
+        box-shadow: 0rem 0 3rem rgba(101, 28, 28, 0.4);
+    }
+    75% {
+        box-shadow: 0rem 0 4rem rgba(120, 41, 41, 0.4);
+        }
+    100% {
+        box-shadow: 0rem 0 5rem rgba(255, 73, 73, 0.4);
+    }
+}
+
+@keyframes pulse_effect_yellow{
+    0% {
+        box-shadow: 0rem 0 1rem rgba(115, 103, 34, 0.4);
+    }
+    25% {
+        box-shadow: 0rem 0 2rem rgba(136, 120, 31, 0.4);
+        }
+    50% {
+        box-shadow: 0rem 0 3rem rgba(181, 157, 22, 0.4);
+    }
+    75% {
+        box-shadow: 0rem 0 4rem rgba(211, 181, 12, 0.4);
+        }
+    100% {
+        box-shadow: 0rem 0 5rem rgba(255, 217, 0, 0.4);
+    }
+}
+
+@keyframes pulse_effect_green{
+    0% {
+        box-shadow: 0rem 0 1rem rgba(46, 86, 22, 0.4);
+    }
+    25% {
+        box-shadow: 0rem 0 2rem rgba(68, 140, 27, 0.4);
+        }
+    50% {
+        box-shadow: 0rem 0 3rem rgba(79, 177, 23, 0.4);
+    }
+    75% {
+        box-shadow: 0rem 0 4rem rgba(84, 206, 14, 0.4);
+        }
+    100% {
+        box-shadow: 0rem 0 5rem rgba(94, 255, 0, 0.4);
+    }
+}
+
+
+.pulse_red{
+}
+.pulse_yellow{
+}
+.pulse_green{
+}
+    
