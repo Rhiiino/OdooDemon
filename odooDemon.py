@@ -2,6 +2,7 @@ from flask import Flask
 import xmlrpc.client
 import subprocess
 import odoorpc
+import subprocess
 
 # Description: ....
 
@@ -58,30 +59,9 @@ class OdooDemon(Flask):
         # Call the 'execute_kw' method on the 'models' server proxy to get a list of installed modules
         modules = models.execute_kw(self.database, self.uid, self.password, 'ir.module.module', 'search_read', [[['state', '=', 'installed']]], {'fields': ['name']})
         return modules
-
-    def restart_server(self):
-        """*NONFUNCTIONAL, still testing."""
-
-        directory_path = r'C:\\Program Files\\Odooserver\\server'
-        command = 'service odoo-server restart'
-
-        database = 'Midhuns_lab'        # ! Modify to reflect current database
-        username = 'admin'                 # ! Modify to match DB login for desired user
-        password = 'admin'                 # ! Modify to match DB login for desired user
-        odoo = odoorpc.ODOO('localhost', port=8069)
-        odoo.login(database, username, password)
-
-        print(odoo.db.list())  # Gets list of DBs
-
-        # odoo.execute_kw(database, 'ir.actions.server', 'run_restart', [])  # Fail?
-        # odoo.service.restart()  # Fail
-        # odoo.shell('odoo.service.server.restart()')  # Fail
-
-        print(odoo._password)
-
     
     def reset_view(self, view_name):
-        """*FUNCTIONAL, almost testing."""
+        """*FUNCTIONAL, just need to formalize function."""
 
         database = 'Midhuns_lab'        # ! Modify to reflect current database
         username = 'admin'                 # ! Modify to match DB login for desired user
@@ -106,6 +86,44 @@ class OdooDemon(Flask):
         id = odoo.env['ir.ui.view'].search([('name', '=', view_name)])  # works
         odoo.env['ir.ui.view'].browse(id[0]).reset_arch('hard')
 
+    def odoorpc_test(self):
+        """*NONFUNCTIONAL, still testing."""
+
+        # ----- Initialize variables [Works]
+        # database = 'Midhuns_lab'   
+        # username = 'admin'               
+        # password = 'admin'             
+        # odoo = odoorpc.ODOO('localhost', port=8069)
+        # odoo.login(database, username, password)
+
+        # ----- To get a list of DBs on your local machine  [Works]
+        # print(odoo.db.list())
+
+
+        # ----- Upgrading a module  [Works]
+        # module_obj = odoo.env['ir.module.module']
+        # module_ids = module_obj.search([('name', "=", "anime")])
+        # module = module_obj.browse(module_ids[0])
+        # module.button_immediate_upgrade()
+
+
+        # ----- Get a list of all installed modules [Works]
+        # module_obj = odoo.env['ir.module.module']
+        # modules = module_obj.search([('state', '=', 'installed')])
+        # module_list = list(map(lambda x: module_obj.browse(x).name, modules))
+
+
+        # ----- Restarting odoo service [Fails]
+        service = "odoo-server-15.0"
+        # odoo.execute_kw(database, 'ir.actions.server', 'run_restart', [])  # Fail?
+        # odoo.service.restart()  # Fail
+        # odoo.shell('odoo.service.server.restart()')  # Fail
+        # print(odoo.env['ir.config_parameter'].get_param('res.config.services'))
+
+        subprocess.call([f'C:\Program Files\Odoo\server', 'restart'])
+
+
+
 
        
 
@@ -116,4 +134,4 @@ class OdooDemon(Flask):
 if __name__ == '__main__':
     od = OdooDemon(__name__)
     # od.reset_view('purchase_order_inherit')
-    od.restart_server()
+    od.odoorpc_test()
