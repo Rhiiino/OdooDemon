@@ -176,12 +176,6 @@ a {
 
 
 
-/* ----- Close card button ---------------------------------------- */
-.close_card{
-    padding: 0px;
-    margin: 0px;
-}
-
 
 
 
@@ -231,13 +225,31 @@ a {
 /* ----- Notification box ---------------------------------------- */
 #notification_box{
     margin: 30px;
-    height: 100px;
+    height: 85px;
     border-radius: 30px;
-    color: rgb(255, 255, 255);
     padding: 15px;
+    color: rgb(255, 255, 255);
     background-color: rgb(182, 182, 182);
     box-shadow: 0rem 0 1rem rgb(255, 255, 255);
     word-wrap: break-word;
+}
+
+
+
+
+
+/* ----- Close card button ---------------------------------------- */
+.close_card{
+    font-size: 20px;
+    /* color: rgb(180, 82, 82); */
+    font-weight: bold;
+    border-radius: 50%;
+    text-align: left;
+    /* box-shadow: 0rem 0 2rem rgb(180, 82, 82); */
+    /* background-color: rgb(180, 82, 82); */
+}
+.close_card:hover{
+    color: rgb(177, 87, 171);
 }
 
 

@@ -1,27 +1,24 @@
 
-// Client side JS file
+// Client side JS file - OdooDemon
 
 // Global vars
 var port = 5000
 var base_url = `http://127.0.0.1:${port}/`
 
 document.addEventListener('DOMContentLoaded', function(){
-    
-    // Add an event listener to all commands listed on back of plus card
+    // 1. Add an event listener to all commands listed on back of plus card
     document.querySelectorAll('#command_list > li').forEach(item => {item.addEventListener('click', async function(event){
         var command = item.textContent;
-
-        // 1. xxx
-
 
         if (command == 'Restart Server'){
         } else if (command == 'Upgrade Module'){
             construct_upgrade_module_card()
         } else if (command == 'Reset View'){
         } else {
-        }
-            
+        }     
     })})
+
+    // 2. xxx
 
 });
 
@@ -29,11 +26,33 @@ document.addEventListener('DOMContentLoaded', function(){
  
 // ----- Custom JS functions -----
 async function test(){
+    /*xxx*/
+
     document.querySelector('#notification').innerHTML = "Restarting odoo server ....."
     var raw_response = await fetch(base_url + 'restartServer')
     var data = await raw_response.json()
     console.log(data)
     document.querySelector('#notification').innerHTML = "Restart complete."
+}
+
+
+
+
+async function delete_card(event){
+    /*xxx*/
+
+    if (event.target.className == 'card'){
+        // 1. Remove selected card
+        event.target.remove()
+
+        // 2. Update visible card # (Sets card labels from left to right, in desending order)
+        var cards = document.querySelectorAll(".card")
+        var card_counter = cards.length - 1
+        for (var c of cards){
+            c.querySelector(".card-header > p").textContent = "# " + card_counter
+            card_counter--
+        }
+    }
 }
 
 async function upgrade_module(event){
@@ -68,8 +87,9 @@ async function upgrade_module(event){
 
 }
 
-
 async function load_modules(select){
+    /*xxx*/
+
     // Make request to server to get list of all installed modules
     var raw_response = await fetch(base_url + 'getInstalledModules')
     var json_response = await raw_response.json()  // Returns list of installed module
@@ -88,14 +108,10 @@ async function load_modules(select){
 async function construct_upgrade_module_card(){
     /*Constructs upgrade module card.*/
 
-    // Initialize variables
-    var x = document.querySelector('.card-list').childElementCount
-    console.log(x)
-
-
-    // 1. Create article (primary shell)
+    // 1. Create article (primary shell) + add delete card event listener to it
     var article = document.createElement('article');
     article.className = 'card';
+    article.addEventListener('dblclick', function(event){delete_card(event)})
 
     // 2. Create div (secondary shell)
     var div = document.createElement("div");
@@ -125,7 +141,6 @@ async function construct_upgrade_module_card(){
     select.appendChild(option);
     load_modules(select) 
 
-
     // 5. Create upgrade button + add event listener
     var button = document.createElement("button");
     button.id = "upgrade_button";
@@ -143,4 +158,5 @@ async function construct_upgrade_module_card(){
 
    // 7. Prepend article to section (This is what holds the card stack)
     document.querySelector(".card-list").prepend(article)
+
 }
