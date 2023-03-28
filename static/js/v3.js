@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
  
 // ----- Custom JS functions -----
+// Function set # 0: Testing
 async function test(){
     /*xxx*/
 
@@ -37,8 +38,7 @@ async function test(){
 }
 
 
-
-
+// Function set # 1: General
 async function delete_card(event){
     /*xxx*/
 
@@ -56,6 +56,8 @@ async function delete_card(event){
     }
 }
 
+
+// Function set # 2: Endpoint callers
 async function upgrade_module(event){
     /* makes call to the appropriate endpoint to upgrade the specified module. */
 
@@ -145,6 +147,8 @@ async function reset_view(event){
     }  
 }
 
+
+// Function set # 3: Dynamic card constructors
 async function construct_upgrade_module_card(){
     /*Constructs upgrade module card.*/
 
@@ -247,7 +251,7 @@ async function construct_reset_view_card(){
    // 6. Create notification box
    var div_notification = document.createElement("div")
    div_notification.id = 'notification_box';
-   div_notification.textContent = 'Specify the technical name of view you would like to reset.';
+   div_notification.textContent = 'Specify the technical name of the view you would like to reset.';
    div.appendChild(div_notification);
 
    // 7. Prepend article to section (This is what holds the card stack)
