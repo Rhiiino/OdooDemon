@@ -3,6 +3,7 @@ import xmlrpc.client
 import subprocess
 import odoorpc
 import subprocess
+from time import perf_counter
 
 # Description: ....
 
@@ -22,13 +23,18 @@ class OdooDemon(Flask):
         self.host = 'localhost'
         self.port = 8069
 
-        self.database = 'Midhuns_lab'        # ! Modify to reflect current database
+        self.database = 'Staging2_mar15'        # ! Modify to reflect current database
         self.username = 'admin'                 # ! Modify to match DB login for desired user
         self.password = 'admin'                 # ! Modify to match DB login for desired user
         self.url = 'http://localhost:8069'
 
+        # xmlrpc.client related variables
         self.common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(self.url))
         self.uid = self.common.authenticate(self.database, self.username, self.password, {})
+
+        # odoorpc related variables
+        self.odoo = odoorpc.ODOO('localhost', port=8069)
+        self.odoo.login(self.database, self.username, self.password)
 
         # Test vars
         self.test = 0
@@ -39,52 +45,73 @@ class OdooDemon(Flask):
         self.config['DEBUG'] = True
         super().run()
 
+
     def upgrade_module(self, name):
         """Upgrades the specified module."""
 
+        # -- xmlrpc upgrade module logic
+        """
         # Connect to the Odoo object server
         models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url))
-
         # Upgrade a module
         module_id = models.execute_kw(self.database, self.uid, self.password, 'ir.module.module', 'search', [[('name', '=', name)]])[0]
-
         result = models.execute_kw(self.database, self.uid, self.password, 'ir.module.module', 'button_immediate_upgrade', [[module_id]])
         # print(result)
+        """
+
+        # -- odoorpc upgrade module logic
+        module_obj = self.odoo.env['ir.module.module']
+        module_ids = module_obj.search([('name', "=", name)])
+        module = module_obj.browse(module_ids[0])
+
+        try:
+            t0 = perf_counter()
+            module.button_immediate_upgrade()
+            t1 = perf_counter()
+            return {"status": 200, "time_to_upgrade": round(t1-t0, 2)}
+        except Exception as e:
+            return {"status": 500, "error": str(e)}
+        
 
     def get_installed_modules(self):
         """Returns a list of all currently installed modules."""
 
+        # -- xmlrpc get installed module logic
         models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url))
-
         # Call the 'execute_kw' method on the 'models' server proxy to get a list of installed modules
         modules = models.execute_kw(self.database, self.uid, self.password, 'ir.module.module', 'search_read', [[['state', '=', 'installed']]], {'fields': ['name']})
         return modules
-    
+     
+
+        # --odoorpc install module logic  *Too slow
+        # module_obj = self.odoo.env['ir.module.module']
+        # modules = module_obj.search([('state', '=', 'installed')])
+        # modules_list = list(map(lambda x: module_obj.browse(x).name, modules))
+        # return modules_list
+
     def reset_view(self, view_name):
-        """*FUNCTIONAL, just need to formalize function."""
+        """Takes the name of the view to reset and executes a hard reset on it."""
 
-        database = 'Midhuns_lab'        # ! Modify to reflect current database
-        username = 'admin'                 # ! Modify to match DB login for desired user
-        password = 'admin'                 # ! Modify to match DB login for desired user
-        url = 'http://localhost:8069'
-        odoo = odoorpc.ODOO('localhost', port=8069)
-        odoo.login(database, username, password)
+        # -- xmlrpc implementation
+        # models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url))
+        # module_id = models.execute_kw(self.database, self.uid, self.password, 'ir.ui.view', 'search', [[('xml_id', '=', 'cap_website.view_order_form_inherit')]])
+        # print(len(module_id))
+        # return
+        # result = models.execute_kw(self.database, self.uid, self.password, 'ir.module.module', 'button_immediate_upgrade', [[module_id]])
 
-        """
-            ir.ui.fields
-            -arch_prev: ?
-            -arch_fs: path to view
-            -arch_db: content inside arch that was saved on last module upgrade/view reset
-            -reset_arch: resets the view (hard or soft (default))
-        """
+        # -- odoorpc implementation
+        id = self.odoo.env['ir.ui.view'].search([('model_data_id.name', '=', 'purchase_view_order_form_inherit')])
+        if not id:
+            return {'status': 404}
+        if len(id)>1:
+            return {'status': 400, "error": "More than one view has this ID."}
+        else:
+            try:
+                self.odoo.env['ir.ui.view'].browse(id[0]).reset_arch('hard')
+                return {'status': 200}
+            except Exception as e:
+                return {'status': 400, "error": str(e)}
 
-        x = odoo.env['ir.ui.view'].search([])  # works
-        # x = odoo.env['ir.ui.view'].search([('name', '=', 'purchase_order_inherit')])   # works
-        # x = odoo.env['ir.ui.view'].search([('id', '=', 2917)])  # works
-        # x = odoo.env['ir.ui.view'].search([('xml_id', '=', 'anime.purchase_order_inherit_test')])  # fails
-
-        id = odoo.env['ir.ui.view'].search([('name', '=', view_name)])  # works
-        odoo.env['ir.ui.view'].browse(id[0]).reset_arch('hard')
 
     def odoorpc_test(self):
         """*NONFUNCTIONAL, still testing."""
@@ -125,7 +152,7 @@ class OdooDemon(Flask):
 
 
 
-       
+
 
 
 
@@ -133,5 +160,5 @@ class OdooDemon(Flask):
 # For testing only
 if __name__ == '__main__':
     od = OdooDemon(__name__)
-    # od.reset_view('purchase_order_inherit')
-    od.odoorpc_test()
+    od.reset_view('view_order_form_inherit')
+    # od.odoorpc_test()

@@ -179,7 +179,7 @@ a {
 
 
 
-/* ----- Module select dropdown ---------------------------------------- */
+/* ----- Module select dropdown (On upgrade module card)---------------------------------------- */
 #module_select{ /* Div container for select */
     margin-top: 30px;
     border-radius: 25px;
@@ -203,8 +203,8 @@ a {
 
 
 
-/* ----- Upgrade button ---------------------------------------- */
-#upgrade_button{
+/* ----- Upgrade button (On upgrade module card) & Reset button (on reset module card)---------------------------------------- */
+#upgrade_button, #reset_button{
     font-size: 18px;
     font-family: 'DM Mono', monospace;
     height: 40px;
@@ -212,17 +212,17 @@ a {
     border-radius: 25px;
     margin-top: 10px;
 }
-#upgrade_button>h1{
+#upgrade_button>h1, #reset_button>h1{
     margin: auto;
 }
-#upgrade_button:hover{
+#upgrade_button:hover, #reset_button:hover{
     background-color: #b949b9;
     box-shadow: 0rem 0 2rem #ba2fba;
 }
 
 
 
-/* ----- Notification box ---------------------------------------- */
+/* ----- Notification box (On upgrade module card)---------------------------------------- */
 #notification_box{
     margin: 30px;
     height: 85px;
@@ -232,7 +232,39 @@ a {
     background-color: rgb(182, 182, 182);
     box-shadow: 0rem 0 1rem rgb(255, 255, 255);
     word-wrap: break-word;
+    overflow: scroll;
 }
+#notification_box::-webkit-scrollbar {
+    display: none;  
+}
+#error_message{
+    color: red;
+}
+#success_message{
+    color: rgb(19, 141, 19);
+}
+#upgrade_time{
+    color: rgb(19, 141, 19);;
+}
+
+
+
+
+
+/* ----- Input box (On reset view card) ---------------------------------------- */
+#choose_view{ /* Div container for select */
+    margin-top: 30px;
+    margin-left: 50px;
+    height: 30px;
+    width: 200px;
+}
+#choose_view > #view_to_reset{
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
 
 
 

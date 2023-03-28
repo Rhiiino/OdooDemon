@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
         } else if (command == 'Upgrade Module'){
             construct_upgrade_module_card()
         } else if (command == 'Reset View'){
+            construct_reset_view_card()
         } else {
         }     
     })})
@@ -56,7 +57,7 @@ async function delete_card(event){
 }
 
 async function upgrade_module(event){
-    /*xxx*/
+    /* makes call to the appropriate endpoint to upgrade the specified module. */
 
     var parent_node = event.currentTarget.parentNode
     var module_to_upgrade = parent_node.querySelector("#installed_modules").value
@@ -76,12 +77,12 @@ async function upgrade_module(event){
 
     // Execute based on server response
     if (json_response.status == 500){
-        parent_node.querySelector('#notification_box').innerHTML = `An error occurred while upgrading the ${module_to_upgrade} module.`
+        parent_node.querySelector('#notification_box').innerHTML = `${module_to_upgrade} Upgrade Failed.<br><span id='error_message'>Error:</span> ${json_response.error}`
         parent_node.parentNode.style.animation = "pulse_effect_red 2s infinite"
         return
     }
 
-    parent_node.querySelector('#notification_box').innerHTML = `Module '${module_to_upgrade}' has been successfully upgraded in ${json_response.time_to_upgrade}s!`
+    parent_node.querySelector('#notification_box').innerHTML = `Module '${module_to_upgrade}' has been <span id='success_message'>successfully</span> upgraded in <span id='upgrade_time'>${json_response.time_to_upgrade}s</span>!`
     parent_node.parentNode.style.animation = "pulse_effect_green 2s infinite"
 
 
@@ -103,6 +104,45 @@ async function load_modules(select){
         select.appendChild(option);
       });
    
+}
+
+async function reset_view(event){
+    /* Makes call to the appropriate endpoint to reset the specified view. */
+
+    var parent_node = event.currentTarget.parentNode
+    var view_to_reset = parent_node.querySelector("#view_to_reset").value
+
+    if (!view_to_reset){
+        parent_node.querySelector("#notification_box").textContent = "You must specify a view."
+    }
+
+    parent_node.querySelector("#notification_box").textContent = "Hard reset of '" + view_to_reset + "' in progress...."
+    parent_node.parentNode.style.animation = "pulse_effect_yellow 2s infinite"     // Set animation style of card (aka article)
+
+    // Make request to server to upgrade
+    var raw_response = await fetch(base_url + 'resetView?view=' + view_to_reset)
+    var json_response = await raw_response.json()  // Returns status of requested view reset
+    console.log(json_response)
+
+    // Execute based on server response
+    if (json_response.status == 404){  // If not views with the identifier was found
+        parent_node.querySelector('#notification_box').innerHTML = `Reset of ${view_to_reset} failed. <br><span id='error_message'>Error:</span>The view ${view_to_reset} could not be found.`
+        parent_node.parentNode.style.animation = "pulse_effect_red 2s infinite"
+
+    } else if (json_response.status == 400){ 
+        parent_node.parentNode.style.animation = "pulse_effect_red 2s infinite"
+        if (json_response.error == "More than one view has this ID."){   // If more than one view matching the identifer was found.
+            parent_node.querySelector('#notification_box').innerHTML = `Reset of ${view_to_reset} failed.<br><span id='error_message'>Error:</span> ${json_response.error}`
+        } else {    // If an error occured while resetting view
+            parent_node.querySelector('#notification_box').innerHTML = `Reset of ${view_to_reset} failed.<br><span id='error_message'>Error:</span> ${json_response.error}`
+        }
+
+    } else {
+        // For successfull reset
+        parent_node.querySelector('#notification_box').innerHTML = `View '${view_to_reset}' has been <span id='success_message'>successfully</span> reset!`
+        parent_node.parentNode.style.animation = "pulse_effect_green 2s infinite"
+
+    }  
 }
 
 async function construct_upgrade_module_card(){
@@ -158,5 +198,60 @@ async function construct_upgrade_module_card(){
 
    // 7. Prepend article to section (This is what holds the card stack)
     document.querySelector(".card-list").prepend(article)
+
+}
+
+async function construct_reset_view_card(){
+    /*Constructs reset view card.*/
+
+    // 1. Create article (primary shell) + add delete card event listener to it
+    var article = document.createElement('article');
+    article.className = 'card';
+    article.addEventListener('dblclick', function(event){delete_card(event)})
+
+    // 2. Create div (secondary shell)
+    var div = document.createElement("div");
+    article.appendChild(div)
+
+    // 3. Create Title block
+    var header = document.createElement("header");
+    header.className = 'card-header';
+    div.appendChild(header)
+    var p = document.createElement('p');
+    p.textContent = '# ' + document.querySelector('.card-list').childElementCount;
+    header.appendChild(p);
+    var h2 = document.createElement('h2');
+    h2.textContent = 'Reset View';
+    header.appendChild(h2)
+
+    // 4. Create input field
+    var div_module = document.createElement('div');
+    div_module.id = 'choose_view';
+    div.appendChild(div_module);
+    var input = document.createElement('input');
+    input.id = "view_to_reset";
+    input.setAttribute('type', 'text')
+    input.setAttribute('name', 'view_id')
+    input.setAttribute('placeholder', 'Enter View identifer')
+    div_module.appendChild(input);
+
+    // 5. Create reset view button + add event listener
+    var button = document.createElement("button");
+    button.id = "reset_button";
+    div.appendChild(button);
+    var h1 = document.createElement("h1");
+    h1.textContent = "Reset";
+    button.appendChild(h1);
+    button.addEventListener('click', function(event){reset_view(event)});
+
+   // 6. Create notification box
+   var div_notification = document.createElement("div")
+   div_notification.id = 'notification_box';
+   div_notification.textContent = 'Specify the technical name of view you would like to reset.';
+   div.appendChild(div_notification);
+
+   // 7. Prepend article to section (This is what holds the card stack)
+    document.querySelector(".card-list").prepend(article)
+
 
 }
