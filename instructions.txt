@@ -1,4 +1,0 @@
-1. Clone into your desired directory
-2. In powershell (or shell in VS code), navigate to said directory
-3. Execute the following command: python -m venv demonenv
-4. Make sure python 

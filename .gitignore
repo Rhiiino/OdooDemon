@@ -21,3 +21,4 @@ bin-release/
 
 # My folders
 __pycache__/
+demonenv/
