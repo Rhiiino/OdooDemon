@@ -23,7 +23,7 @@ class OdooDemon(Flask):
         self.host = 'localhost'
         self.port = 8069
 
-        self.database = 'Staging2_mar15'        # ! Modify to reflect current database
+        self.database = 'Staging_May15th'         # ! Modify to reflect current database
         self.username = 'admin'                 # ! Modify to match DB login for desired user
         self.password = 'admin'                 # ! Modify to match DB login for desired user
         self.url = 'http://localhost:8069'
@@ -72,7 +72,6 @@ class OdooDemon(Flask):
         except Exception as e:
             return {"status": 500, "error": str(e)}
         
-
     def get_installed_modules(self):
         """Returns a list of all currently installed modules."""
 
@@ -100,7 +99,7 @@ class OdooDemon(Flask):
         # result = models.execute_kw(self.database, self.uid, self.password, 'ir.module.module', 'button_immediate_upgrade', [[module_id]])
 
         # -- odoorpc implementation
-        id = self.odoo.env['ir.ui.view'].search([('model_data_id.name', '=', 'purchase_view_order_form_inherit')])
+        id = self.odoo.env['ir.ui.view'].search([('model_data_id.name', '=', view_name)])
         if not id:
             return {'status': 404}
         if len(id)>1:
@@ -112,7 +111,16 @@ class OdooDemon(Flask):
             except Exception as e:
                 return {'status': 400, "error": str(e)}
 
+    def get_models(self):
+        """xxx"""
 
+        temp = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url))
+        models = temp.execute_kw(self.database, self.uid, self.password,'ir.model', 'search_read',[[]],{'fields': ['model']})
+        models = list(map(lambda x: x['model'], models))
+        return models
+    
+
+    # ----- Test function -----
     def odoorpc_test(self):
         """*NONFUNCTIONAL, still testing."""
 
@@ -123,8 +131,15 @@ class OdooDemon(Flask):
         # odoo = odoorpc.ODOO('localhost', port=8069)
         # odoo.login(database, username, password)
 
+        # ----- To get current DB  [?]
+        # print(self.odoo.db.dbname())
+
         # ----- To get a list of DBs on your local machine  [Works]
-        # print(odoo.db.list())
+        # print(self.odoo.db.list())
+
+        # ----- To swtich to a different database  [?]
+        # self.odoo.db.switch('midhuns_lab')
+
 
 
         # ----- Upgrading a module  [Works]
@@ -141,15 +156,25 @@ class OdooDemon(Flask):
 
 
         # ----- Restarting odoo service [Fails]
-        service = "odoo-server-15.0"
+        # service = "odoo-server-15.0"
         # odoo.execute_kw(database, 'ir.actions.server', 'run_restart', [])  # Fail?
         # odoo.service.restart()  # Fail
         # odoo.shell('odoo.service.server.restart()')  # Fail
         # print(odoo.env['ir.config_parameter'].get_param('res.config.services'))
 
-        subprocess.call([f'C:\Program Files\Odoo\server', 'restart'])
+        # subprocess.call([f'C:\Program Files\Odoo\server', 'restart'])
 
+    def xmlrpc_test(self):
 
+        t0 = perf_counter()
+        temp = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(self.url))
+        models = temp.execute_kw(self.database, self.uid, self.password,'ir.model', 'search_read',[[]],{'fields': ['model']})
+        print(perf_counter()-t0)
+        
+        
+        t0 = perf_counter()
+        models_list = self.odoo.env['ir.model'].search_read([], ['model'])
+        print(perf_counter() - t0)
 
 
 
@@ -160,5 +185,8 @@ class OdooDemon(Flask):
 # For testing only
 if __name__ == '__main__':
     od = OdooDemon(__name__)
-    od.reset_view('view_order_form_inherit')
+    # od.reset_view('view_order_form_inherit')
+    od.get_models()
+
     # od.odoorpc_test()
+    # od.xmlrpc_test()

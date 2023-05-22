@@ -19,37 +19,37 @@
 
     <section class="card-list">
 
-        <!--Testing: Upgrade module card-->
-        {# <article class="card">
+{# 
+        <article class="card">
           <div>
 
             <!-- Card Title -->
             <header class="card-header">
               <p># 1</p>
-              <h2>Upgrade Module</h2>
+              <h2>Field lookup</h2>
             </header>
 
-            <!-- Module dropdown -->
-            <div id='module_select'>
-                <select name="installed_modules" id="installed_modules">
-                    <option value="">Select a module</option>
+            <div id='model_select'>
+                <select name="models" id="models">
+                    <option value="">Select a model</option>
                 </select>
             </div>
 
-            <!-- Upgrade Button -->
-            <button id='upgrade_button'><h1>Upgrade</h1></button>
+            <!-- Input field -->
+            <div id='choose_field'>
+                <input type="text" id="field_to_get" name="view_id" placeholder="Enter technical field name"><br>
+            </div>
+
+            <!-- Get field Button -->
+            <button id='get_field'><h1>Get</h1></button>
 
             <!-- Notification box -->
             <div id='notification_box'>
-              Select a module to upgrade.
+              Specify a model + field to get.
             </div>
  
           </div>
-        </article> #}
-
-
-        <!--Testing: Reset View card-->
-       
+        </article>  #}
 
 
         <!-- Plus Card -->
@@ -75,8 +75,9 @@
                     <li>Restart Server</li>
                     <li>Upgrade Module</li>
                     <li>Reset View</li>
-                    <li>Blast Off</li>
-                    <li>Ice Age</li>
+                    <li>Field Lookup</li>
+                    <li>Switch Database</li>
+                    <li>Sugondese</li>
                     <li>Help</li>
                </ul>
             </div>

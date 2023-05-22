@@ -1,0 +1,56 @@
+        <!--Testing: Upgrade module card-->
+        <article class="card">
+          <div>
+
+            <!-- Card Title -->
+            <header class="card-header">
+              <p># 1</p>
+              <h2>Upgrade Module</h2>
+            </header>
+
+            <!-- Module dropdown -->
+            <div id='module_select'>
+                <select name="installed_modules" id="installed_modules">
+                    <option value="">Select a module</option>
+                </select>
+            </div>
+
+            <!-- Upgrade Button -->
+            <button id='upgrade_button'><h1>Upgrade</h1></button>
+
+            <!-- Notification box -->
+            <div id='notification_box'>
+              Select a module to upgrade.
+            </div>
+ 
+          </div>
+        </article> 
+
+
+        <!--Testing: Reset View card-->
+        <article class="card">
+          <div>
+
+            <!-- Card Title -->
+            <header class="card-header">
+              <p># 1</p>
+              <h2>Reset View</h2>
+            </header>
+
+            <!-- Input field -->
+            <div id='choose_view'>
+                {# <input id="view_to_reset"/> #}
+                {# <label for="view_id">View:</label> #}
+                <input type="text" id="view_to_reset" name="view_id" placeholder="Enter View identifer"><br>
+            </div>
+
+            <!-- Upgrade Button -->
+            <button id='reset_button'><h1>Reset</h1></button>
+
+            <!-- Notification box -->
+            <div id='notification_box'>
+              Specify the technical name of view you would like to reset.
+            </div>
+ 
+          </div>
+        </article>

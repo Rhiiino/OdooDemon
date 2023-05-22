@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function(){
         }     
     })})
 
-    // 2. xxx
+    // 2. temp
+    // document.querySelector("#")
 
 });
 
@@ -145,6 +146,23 @@ async function reset_view(event){
         parent_node.parentNode.style.animation = "pulse_effect_green 2s infinite"
 
     }  
+}
+
+async function get_models(event){
+    /* xxx */
+
+    // Make request to server to get list of all installed modules
+    var raw_response = await fetch(base_url + 'getModels')
+    var json_response = await raw_response.json()  // Returns list of installed module
+    var modules = json_response.modules
+
+    // Insert module list into webpage using DOM manipulation
+    modules.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item;
+        option.text = item;
+        select.appendChild(option);
+      });
 }
 
 

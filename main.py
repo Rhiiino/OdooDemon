@@ -21,10 +21,10 @@ def restart_server():
     payload = {'status': 200}
     return jsonify(payload)
 
-
-@app.route('/getInstalledModules', methods=['GET'])
-def get_modules():
-    """Returns a list of all installed odoo modules"""
+@app.route('/getModels', methods=['GET'])
+def get_models():
+    """Returns a list of all odoo models.
+    TESTING"""
 
     # odoorpc module logic
     # modules = app.get_installed_modules()
@@ -32,10 +32,17 @@ def get_modules():
     # return jsonify(payload)
 
     # xmlrpc module  logic
-    modules = sorted(list(map(lambda x: x['name'], app.get_installed_modules())) )   
-    payload = {'status': 200, 'modules': modules}
+    models = app.get_models()
+    payload = {'status': 200, 'models': models}
     return jsonify(payload)
 
+@app.route('/resetView', methods=['GET'])
+def reset_view():
+    """Performs a hard reset on the specified view."""
+
+    view_to_reset = request.args.get('view')
+    result = app.reset_view(view_to_reset)
+    return result
 
 @app.route('/upgradeModule', methods=['GET'])
 def upgrade_module():
@@ -74,13 +81,14 @@ def upgrade_module():
     
     # return jsonify(payload)
 
-@app.route('/resetView', methods=['GET'])
-def reset_view():
-    """Performs a hard reset on the specified view."""
+@app.route("/getInstalledModules", methods=['GET'])
+def get_installed_modules():
+    """xxx"""
 
-    view_to_reset = request.args.get('view')
-    result = app.reset_view(view_to_reset)
-    return result
+    modules = [data['name'] for data in app.get_installed_modules()]
+    payload = {'status': 200, 'modules': modules}
+    return jsonify(payload)
+
 
 
 

@@ -20,7 +20,7 @@ body {
     margin: 20px auto;
 }
 #title > div:nth-child(1){
-    width: 70%;
+    width: 80%;
 }
 #title > div:nth-child(2){
     width: 30%;
@@ -234,7 +234,7 @@ a {
 
 /* ----- Notification box (On upgrade module card)---------------------------------------- */
 #notification_box{
-    margin: 30px;
+    margin: 20px;
     height: 85px;
     border-radius: 30px;
     padding: 15px;
@@ -294,6 +294,61 @@ a {
     color: rgb(177, 87, 171);
 }
 
+
+
+
+
+
+
+/* -----Field lookup card + components---------------------------------------- */
+#model_select{ /* Div container for select */
+    margin-top: 30px;
+    border-radius: 25px;
+    height: 30px;
+    width: 300px;
+    /* box-shadow: 0rem 0 2rem rgb(180, 82, 82); */
+}
+#model_select > select{ /* Select dropdown */
+    border-radius: 25px;
+    width: 200px;
+    height: 100%;
+}
+#model_select > select > option{ /* Select dropdown */
+    padding: 10px;
+    font-size: 15px;
+    font-family: 'DM Mono', monospace;
+}
+#model_select > select > option:nth-child(1){ /* Select dropdown */
+    text-align: center;
+}
+
+#choose_field{ /* Div container for select */
+    margin-top: 5px;
+    margin-left: 50px;
+    height: 30px;
+    width: 200px;
+}
+#choose_field > #field_to_get{
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+#get_field{
+    font-size: 18px;
+    font-family: 'DM Mono', monospace;
+    height: 40px;
+    width: 150px;
+    border-radius: 25px;
+    margin-top: 10px;
+}
+#get_field>h1{
+    margin: auto;
+}
+#get_field:hover{
+    background-color: #b949b9;
+    box-shadow: 0rem 0 2rem #ba2fba;
+}
 
 
 
