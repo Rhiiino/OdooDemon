@@ -3,7 +3,8 @@
 
 // Global vars
 var port = 5000
-var base_url = `http://127.0.0.1:${port}/`
+// var base_url = `http://127.0.0.1:${port}/`
+var base_url = `http://${process.env.DEMONHOST}:${proces.env.DEMONPORT}/`
 
 document.addEventListener('DOMContentLoaded', function(){
     // 1. Add an event listener to all commands listed on back of plus card
@@ -19,26 +20,13 @@ document.addEventListener('DOMContentLoaded', function(){
         }     
     })})
 
-    // 2. temp
-    // document.querySelector("#")
+
 
 });
 
 
  
 // ----- Custom JS functions -----
-// Function set # 0: Testing
-async function test(){
-    /*xxx*/
-
-    document.querySelector('#notification').innerHTML = "Restarting odoo server ....."
-    var raw_response = await fetch(base_url + 'restartServer')
-    var data = await raw_response.json()
-    console.log(data)
-    document.querySelector('#notification').innerHTML = "Restart complete."
-}
-
-
 // Function set # 1: General
 async function delete_card(event){
     /*xxx*/
@@ -56,7 +44,6 @@ async function delete_card(event){
         }
     }
 }
-
 
 // Function set # 2: Endpoint callers
 async function upgrade_module(event){
@@ -146,23 +133,6 @@ async function reset_view(event){
         parent_node.parentNode.style.animation = "pulse_effect_green 2s infinite"
 
     }  
-}
-
-async function get_models(event){
-    /* xxx */
-
-    // Make request to server to get list of all installed modules
-    var raw_response = await fetch(base_url + 'getModels')
-    var json_response = await raw_response.json()  // Returns list of installed module
-    var modules = json_response.modules
-
-    // Insert module list into webpage using DOM manipulation
-    modules.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        option.text = item;
-        select.appendChild(option);
-      });
 }
 
 

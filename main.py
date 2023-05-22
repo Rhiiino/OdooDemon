@@ -1,9 +1,6 @@
 from odooDemon import OdooDemon
 from flask import request, jsonify, render_template
 
-# Description: ....
-
-
 
 # Initialize OdooDemon instance
 app = OdooDemon(__name__)
@@ -21,6 +18,7 @@ def restart_server():
     payload = {'status': 200}
     return jsonify(payload)
 
+
 @app.route('/getModels', methods=['GET'])
 def get_models():
     """Returns a list of all odoo models.
@@ -36,6 +34,7 @@ def get_models():
     payload = {'status': 200, 'models': models}
     return jsonify(payload)
 
+
 @app.route('/resetView', methods=['GET'])
 def reset_view():
     """Performs a hard reset on the specified view."""
@@ -43,6 +42,7 @@ def reset_view():
     view_to_reset = request.args.get('view')
     result = app.reset_view(view_to_reset)
     return result
+
 
 @app.route('/upgradeModule', methods=['GET'])
 def upgrade_module():
@@ -81,6 +81,7 @@ def upgrade_module():
     
     # return jsonify(payload)
 
+
 @app.route("/getInstalledModules", methods=['GET'])
 def get_installed_modules():
     """xxx"""
@@ -91,42 +92,6 @@ def get_installed_modules():
 
 
 
-
-
-
-# --- Test routes ---
-@app.route('/t0', methods=['POST', 'GET'])
-def test0():
-
-    if request.method == 'POST':
-        response_obj = request.json     #You can now do stuff with the response
-        return 'POST request success'  # Return response as string
-    elif request.method == 'GET':
-        request_obj = request.args
-        return 'GET request success'   
-
-    # You can also send back the response as a JSON object
-    data_dict = {"prop1":"val1", "prop2":"val2"}
-    return jsonify(data_dict)
-
-@app.route('/v1', methods=['POST', 'GET'])  # For v1 template (Abstract)
-def test1():
-    return render_template('home.j2')
-
-@app.route('/v2', methods=['POST', 'GET'])  # For v2 template (Cards)
-def test2():
-    return render_template('cards.j2')
-
-
-
-
 #Start server on specified IP address and port
 if __name__ == "__main__":
-    pass
-    # app.upgrade_module('cap_website')
-    # app.restart_server()
     app.run()
-
-
-
-    
