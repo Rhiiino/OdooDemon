@@ -2,7 +2,7 @@
 A command panel designed to make programming more efficient for odoo developers.
 
 
-# Instructions
+# Installation Instructions
 1. Open .env file and set variables
 1. Create a local virtual environment
 2. Activate virtual environmnet
