@@ -2,7 +2,7 @@
 
 
 // Global vars
-var base_url = "http://localhost:1027/"    // Format: "http://{host}:{port}/", the host and port should match those listed in your .env file
+var base_url = "http://localhost:1027/"    // Format: "http://{host}:{port}/", the host and port should match the DEMONHOST and DEMONPORT variables listed in your .env file
 
 document.addEventListener('DOMContentLoaded', function(){
     // 1. Add an event listener to all commands listed on back of plus card
