@@ -1,5 +1,5 @@
 # odooDemon
-A command panel designed to make programming more efficient for odoo developers.
+A command panel designed to streamline workflow for odoo developers.
 
 
 # Installation Instructions
