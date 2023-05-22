@@ -6,7 +6,7 @@ from flask import request, jsonify, render_template
 app = OdooDemon(__name__)
 
 # ----- Route handlers -----
-@app.route('/v3', methods=['POST', 'GET'])  # For v3 template (Custom card ++)
+@app.route('/', methods=['POST', 'GET'])  # For v3 template (Custom card ++)
 def test3():
     return render_template('v3.j2')
 
@@ -16,22 +16,6 @@ def restart_server():
     """Restarts server"""
 
     payload = {'status': 200}
-    return jsonify(payload)
-
-
-@app.route('/getModels', methods=['GET'])
-def get_models():
-    """Returns a list of all odoo models.
-    TESTING"""
-
-    # odoorpc module logic
-    # modules = app.get_installed_modules()
-    # payload = {'status': 200, 'modules': modules}
-    # return jsonify(payload)
-
-    # xmlrpc module  logic
-    models = app.get_models()
-    payload = {'status': 200, 'models': models}
     return jsonify(payload)
 
 
@@ -84,7 +68,7 @@ def upgrade_module():
 
 @app.route("/getInstalledModules", methods=['GET'])
 def get_installed_modules():
-    """xxx"""
+    """Enpoint used for returning a list of all currently installed modules."""
 
     modules = [data['name'] for data in app.get_installed_modules()]
     payload = {'status': 200, 'modules': modules}

@@ -24,9 +24,6 @@ body {
 }
 #title > div:nth-child(2){
     width: 30%;
-    /* animation: title_image_animation 4s;
-    animation-iteration-count: 1;
-    transform-origin: -0.1px; */
 }
 #title > div:nth-child(2) > img{
     width: 60px;
@@ -103,7 +100,9 @@ body {
     box-shadow: 0rem 0 2rem rgb(180, 82, 82);
     transform: translate(-10px);
 }
-
+#command_list > .unset_functions{  /* Used to apply a red font color to non-implemented commands */
+    color: red;
+}
 
 
 

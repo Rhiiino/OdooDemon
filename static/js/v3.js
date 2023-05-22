@@ -1,10 +1,8 @@
-
 // Client side JS file - OdooDemon
 
+
 // Global vars
-var port = 5000
-// var base_url = `http://127.0.0.1:${port}/`
-var base_url = `http://${process.env.DEMONHOST}:${proces.env.DEMONPORT}/`
+var base_url = "http://localhost:1027/"    // Format: "http://{host}:{port}/", the host and port should match those listed in your .env file
 
 document.addEventListener('DOMContentLoaded', function(){
     // 1. Add an event listener to all commands listed on back of plus card
@@ -19,13 +17,10 @@ document.addEventListener('DOMContentLoaded', function(){
         } else {
         }     
     })})
-
-
-
 });
 
 
- 
+
 // ----- Custom JS functions -----
 // Function set # 1: General
 async function delete_card(event){
