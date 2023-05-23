@@ -10,5 +10,6 @@ A command panel designed to streamline workflow for odoo developers.
    try running "Set-ExecutionPolicy Unrestricted -Force" before you run this command.
 3. Install dependencies from requirements.txt file. ( Command: "pip3 install -r requirements.txt" )
 4. Open static/js/v3.js and update variable 'base_url' to reflect your local address
-4. Run main.py ( Command: "python main.py")
-5. Using a web browser, visit the address that specified in your terminal (Ex: "http://localhost:1027" )
+5. Ensure your odoo service is running.
+6. Run main.py ( Command: "python main.py")
+7. Using a web browser, visit the address that specified in your terminal (Ex: "http://localhost:1027" )
