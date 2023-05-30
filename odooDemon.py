@@ -10,8 +10,8 @@ load_dotenv() # Load variables from .env file
 
 
 class OdooDemon(Flask):
-    """OdooDemon class that incorporates the flask application to run web server as well as custom
-    odoo packages for the purpose of making quality of life improvements when for odoo developers."""
+    """OdooDemon class that incorporates the flask application to run a web server as well as custom
+    odoo packages for the purpose of making quality of life improvements for odoo developers."""
 
     def __init__(self, name):
         """Constructor for the OdooDemon class."""
@@ -83,3 +83,9 @@ class OdooDemon(Flask):
                 return {'status': 200}
             except Exception as e:
                 return {'status': 400, "error": str(e)}
+
+
+
+if __name__ == "__main__":
+    demon = OdooDemon(__name__)
+    print("YES")

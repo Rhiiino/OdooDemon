@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function(){
             construct_upgrade_module_card()
         } else if (command == 'Reset View'){
             construct_reset_view_card()
+        } else if (command == 'Server Control'){
+            construct_server_control_card()
         } else {
         }     
     })})
@@ -40,6 +42,8 @@ async function delete_card(event){
     }
 }
 
+
+
 // Function set # 2: Endpoint callers
 async function upgrade_module(event){
     /* makes call to the appropriate endpoint to upgrade the specified module. */
@@ -58,7 +62,6 @@ async function upgrade_module(event){
     // Make request to server to upgrade
     var raw_response = await fetch(base_url + 'upgradeModule?module=' + module_to_upgrade)
     var json_response = await raw_response.json()  // Returns status of requested upgrade
-    console.log(json_response)
 
     // Execute based on server response
     if (json_response.status == 500){
@@ -130,8 +133,127 @@ async function reset_view(event){
     }  
 }
 
+async function restart_server(event){
+    /* xxx */
+
+    var clicked_element  = event.currentTarget
+    var version_to_restart = clicked_element.id
+    var server_status = document.querySelector("#toggle_v" + version_to_restart).value
+    console.log("Version to restart: " + version_to_restart + server_status)
+
+    // Check if server is off (aka corresponding toggle is off), if so inform user and exit
+
+}
+
+async function toggle_server(event){
+    /* xxx */
+
+    // 1. Initialize variables
+    var clicked_element  = event.currentTarget
+    // console.log("Initial status: " + clicked_element.value) // Debugging
+    clicked_element.value = (clicked_element.value == 'on') ? 'off' : 'on'  // Update value of toggle (on or off)
+    var version_to_toggle = clicked_element.parentNode.id // Get id (aka odoo version) of toggle container for clicked input element  
+    console.log("Version to toggle: " + version_to_toggle) // Debugging
+
+    // x. Disable card before request is made
+    secondary_shell = document.querySelector("#" + version_to_toggle)
+    // secondary_shell.querySelector('#notification_box').innerHTML = `Please Wait. Odoo V${version_to_toggle} is turning ${clicked_element.value}...`
+    // parent_node.parentNode.style.animation = "pulse_effect_green 2s infinite"
+
+
+    // x. Make server request to toggle
+
+
+}
+
 
 // Function set # 3: Dynamic card constructors
+async function construct_server_control_card(){
+    /*Constructs Server Control card.*/
+    console.log("SERVER CONTROL CARD SELECTED")
+
+    // 1. Create article (primary shell) + add delete card event listener to it
+    var article = document.createElement('article');
+    article.className = 'card';
+    article.addEventListener('dblclick', function(event){delete_card(event)})
+
+    // 2. Create div (secondary shell)
+    var div = document.createElement("div");
+    article.appendChild(div)
+
+    // 3. Create Title block
+    var header = document.createElement("header");
+    header.className = 'card-header';
+    div.appendChild(header)
+    var p = document.createElement('p');
+    p.textContent = '# ' + document.querySelector('.card-list').childElementCount;
+    header.appendChild(p);
+    var h2 = document.createElement('h2');
+    h2.textContent = 'Server Control';
+    header.appendChild(h2)
+
+    // 4. Query server to obtain local device stats (i.e. What odoo version are on device + which versions are not/running)
+    var raw_response = await fetch(base_url + 'getVersions')
+    var json_response = await raw_response.json()  // Returns local server(s) data
+    console.log(json_response)
+    
+    // 5. Construct Toggles (one for each version of odoo on this device)
+    var maintogglecontainer = document.createElement("div")
+    maintogglecontainer.className = "maintogglecontainer"
+    for (var version in json_response['installed_versions']){
+        if (json_response['installed_versions'][version] == true){  // Ensures toggles are only created for installed odoo versions
+            // A. Create toggle container
+            var togglediv = document.createElement("div")
+            togglediv.className = "toggle_container" // Set ID to odoo version this button is intended for
+            togglediv.id = version
+            // B. Create Toggle Label
+            var togglelabel = document.createElement("label")
+            togglelabel.for = "toggle_v" + version
+            togglelabel.textContent = "v" + version
+            togglediv.appendChild(togglelabel)
+            // C. Create break line
+            togglediv.appendChild(document.createElement("br"))
+            // D. Create Toggle Input
+            var toggleinput = document.createElement("input")
+            toggleinput.className = "toggle"
+            toggleinput.id = "toggle_v" + version
+            toggleinput.type = "checkbox"
+            toggleinput.value = 'off' // Set initial value to off
+            togglediv.appendChild(toggleinput)
+            console.log(toggleinput.value)
+            // x. Set toggle to true if this particular version is running
+            if (json_response['server_status'][version] == true){
+                toggleinput.click()
+                toggleinput.value = 'on' 
+            }
+            toggleinput.addEventListener('click', function(event){toggle_server(event)}) // Add event listener
+            // E. Create reset button container
+            var resetButtonContainer = document.createElement("div")
+            var resetButtonImg = document.createElement("img")
+            resetButtonImg.id = version // Set ID to odoo version this button is intended for easy access later
+            resetButtonImg.src = "static/img/restart_icon.png"
+            resetButtonImg.addEventListener('click', function(event){restart_server(event)})
+            resetButtonContainer.appendChild(resetButtonImg)
+            togglediv.appendChild(resetButtonContainer)
+            // F. Finally, append toggle button to main toggle container
+            maintogglecontainer.append(togglediv)
+        }
+    }
+
+    // 6. Append toggle container to secondary shell
+    div.appendChild(maintogglecontainer)
+
+    // 7. Create notification box
+    var notification_box = document.createElement("div")
+    notification_box.id = "notification_box"
+    div.appendChild(notification_box)
+
+    // 8.. Prepend primary shell (article) to section (This is what holds the card stack)
+    document.querySelector(".card-list").prepend(article)
+
+
+}
+
 async function construct_upgrade_module_card(){
     /*Constructs upgrade module card.*/
 

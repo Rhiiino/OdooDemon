@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\users\midhu\onedrive\documents\MyStuff\mygitrepos\OdooDemon\demonenv"
+VIRTUAL_ENV="C:\Users\massi\Documents\Github_files\OdooDemon\demonenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

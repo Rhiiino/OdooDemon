@@ -1,5 +1,6 @@
 from odooDemon import OdooDemon
 from flask import request, jsonify, render_template
+import subprocess
 
 
 # Initialize OdooDemon instance
@@ -9,14 +10,6 @@ app = OdooDemon(__name__)
 @app.route('/', methods=['POST', 'GET'])  # For v3 template (Custom card ++)
 def test3():
     return render_template('v3.j2')
-
-
-@app.route('/restartServer', methods=['GET'])
-def restart_server():
-    """Restarts server"""
-
-    payload = {'status': 200}
-    return jsonify(payload)
 
 
 @app.route('/resetView', methods=['GET'])
@@ -37,35 +30,6 @@ def upgrade_module():
     return result
 
 
-
-    # --- Old logic involing xmlrpc:
-    # module_to_upgrade = request.args.get('module')
-    # temp = "Odoo is currently processing a scheduled action"
-    # result = None
-    # time_elapsed = None
-
-    # # Loops until either odoo scheduled action message is overcome and module is upgraded or upgrade fails
-    # while temp == "Odoo is currently processing a scheduled action":
-    #     try:
-    #         t1 = perf_counter()
-    #         result = app.upgrade_module(module_to_upgrade)
-    #         time_elapsed = perf_counter() - t1
-    #         temp = "Success"
-    #     except Exception as e:
-    #         if "Odoo is currently processing a scheduled action" in str(e):
-    #             continue
-    #         else:
-    #             temp = "Error"
-    
-    # payload = {}
-    # if temp == 'Error':
-    #     payload = {'status': 500}
-    # else:
-    #     payload = {"status": 200, 'time_to_upgrade': float(round(time_elapsed, 2))}
-    
-    # return jsonify(payload)
-
-
 @app.route("/getInstalledModules", methods=['GET'])
 def get_installed_modules():
     """Enpoint used for returning a list of all currently installed modules."""
@@ -73,6 +37,49 @@ def get_installed_modules():
     modules = [data['name'] for data in app.get_installed_modules()]
     payload = {'status': 200, 'modules': modules}
     return jsonify(payload)
+
+
+@app.route('/getVersions', methods=['GET'])
+def get_versions():
+    """xxx"""
+
+    # Check what odoo versions are installed on this device
+    local_server_analysis = {}
+    for v in ['14', '15', '16']:
+        command = f"get-service '*odoo-server-{v}*'"  
+        existence = subprocess.run(["powershell", "-Command", command], capture_output=True).stdout
+        local_server_analysis[v] = True if existence else False
+    
+    # Check which versions have servers currently running
+    server_status = get_server_status()
+
+    return {"status":200, "installed_versions": local_server_analysis, "server_status": server_status}
+
+
+@app.route('/getServerStatus', methods=['GET'])
+def get_server_status():
+    """xxx"""
+
+    server_statuses = {"status": 200}
+    for v in ['14', '15', '16']:
+        command = f"get-service '*odoo-server-{v}*' | where-object {{$_.Status -eq 'Running'}}"
+        running = subprocess.run(["powershell", "-Command", command], capture_output=True).stdout
+        server_statuses[v] = True if running else False
+    
+    return server_statuses
+
+
+@app.route('/toggle_server', methods=['GET'])
+def toggle_server():
+    """xxx"""
+    version = request.args.get('version')
+
+
+
+@app.route('/restart_server', methods=['GET'])
+def restart_server():
+    """xxx"""
+    version = request.args.get('version')
 
 
 
