@@ -83,3 +83,18 @@ class OdooDemon(Flask):
                 return {'status': 200}
             except Exception as e:
                 return {'status': 400, "error": str(e)}
+
+
+    def field_lookup(self, model, id, field):
+        """Searches for the specified field in the specified record 
+            using the specified id."""
+
+        try:
+            model_obj = self.odoo.env[model]
+            record = model_obj.browse(int(id))
+            field = record[field]
+            return {"status": 200, "data":field}
+        
+        except Exception as e: 
+            print(f"---Error: {e}")
+            return {"status": 500}

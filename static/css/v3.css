@@ -212,8 +212,9 @@ a {
 
 
 
-/* ----- Upgrade button (On upgrade module card) & Reset button (on reset module card)---------------------------------------- */
-#upgrade_button, #reset_button{
+/* ----- Upgrade button (On upgrade module card) & Reset button (on reset module card)
+            Lookup button (on record search card)---------------------------------------- */
+#upgrade_button, #reset_button, #field_search_button{
     font-size: 18px;
     font-family: 'DM Mono', monospace;
     height: 40px;
@@ -221,10 +222,10 @@ a {
     border-radius: 25px;
     margin-top: 10px;
 }
-#upgrade_button>h1, #reset_button>h1{
+#upgrade_button>h1, #reset_button>h1, #field_search_button>h1{
     margin: auto;
 }
-#upgrade_button:hover, #reset_button:hover{
+#upgrade_button:hover, #reset_button:hover, #field_search_button:hover{
     background-color: #b949b9;
     box-shadow: 0rem 0 2rem #ba2fba;
 }
@@ -274,6 +275,86 @@ a {
     text-align: center;
 }
 
+
+
+
+
+
+/* ----- Server Toggle (On Server Control card) ---------------------------------------- */
+.maintogglecontainer{ /*Where toggles on a given card are stored within */
+    margin: 20px;
+}
+
+.toggle_container{
+    margin-left: 20px;
+    display: flex;
+    padding-left: 15px;
+}
+
+.toggle_container > label{
+    margin: 10px;
+}
+
+.toggle_container > div > img {
+    width:30px;
+    height: auto;
+    color: white;
+    background-color: rgb(94, 210, 214);
+    border-radius: 50%;;
+    margin: 4px;
+}
+
+.toggle_container > div > img:hover {
+    background-color: rgb(158, 92, 158);
+}
+
+.toggle {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 62px;
+    height: 32px;
+    display: inline-block;
+    position: relative;
+    border-radius: 50px;
+    overflow: hidden;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: #707070;
+    transition: background-color ease 0.3s;
+  }
+  
+.toggle:before {
+    content: "on off";
+    display: block;
+    position: absolute;
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    font: 10px/28px Helvetica;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-indent: -22px;
+    word-spacing: 37px;
+    color: #fff;
+    text-shadow: -1px -1px rgba(0,0,0,0.15);
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+  }
+  
+.toggle:checked {
+    background-color: #4CD964;
+  }
+  
+.toggle:checked:before {
+    left: 32px;
+  }
 
 
 
@@ -348,6 +429,35 @@ a {
     background-color: #b949b9;
     box-shadow: 0rem 0 2rem #ba2fba;
 }
+
+
+
+
+/* ----- Record Search Card---------------------------------------- */
+#field_lookup{ /* Div container for select */
+    margin-top: 5px;
+    margin-left: 50px;
+    height: 30px;
+    width: 200px;
+}
+#field_lookup > input{
+    border-radius: 25px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+#field_lookup + #notification_box{
+    margin-top: 140px;
+    height: 75px;
+    width: 250px;
+    text-align: left;
+}
+
+
+
+
+
+
 
 
 
