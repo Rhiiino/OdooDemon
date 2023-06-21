@@ -69,6 +69,24 @@ def get_server_status():
     return server_statuses
 
 
+@app.route('/fieldLookup', methods=['GET'])
+def field_lookup():
+    """looks up the requested field in the specified record from
+        the specified model."""
+
+    model = request.args.get('model')
+    model_id = request.args.get('id')
+    field = request.args.get('field')
+    result = app.field_lookup(model, model_id, field)
+
+    response = result
+    if result["status"] == 200 and "Recordset" in str(result["data"]):
+        response = { "status": 200, "id": str(result["data"].id), "model": str(result["data"]._name) }
+    elif result["status"] == 200:
+        response = {"status": 200, "data": result["data"]}
+
+    return response
+
 @app.route('/toggle_server', methods=['GET'])
 def toggle_server():
     """xxx"""

@@ -85,7 +85,27 @@ class OdooDemon(Flask):
                 return {'status': 400, "error": str(e)}
 
 
+    def field_lookup(self, model, id, field):
+        """xxx"""
+
+        try:
+            model_obj = self.odoo.env[model]
+            record = model_obj.browse(int(id))
+            field = record[field]
+            return {"status": 200, "data":field}
+        
+        except Exception as e: 
+            print(f"---Error: {e}")
+            return {"status": 500}
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     demon = OdooDemon(__name__)
-    print("YES")
+    print(demon.field_lookup("purchase.order", 12, "order_line"))

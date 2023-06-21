@@ -16,10 +16,22 @@ document.addEventListener('DOMContentLoaded', function(){
             construct_reset_view_card()
         } else if (command == 'Server Control'){
             construct_server_control_card()
-        } else {
+        } else if (command == 'Field Search'){
+            construct_field_search_card()
+            
         }     
     })})
+
+
+    // Testing
+    document.querySelector("#field_search_button").addEventListener("click", 
+        function(event){field_search(event)})
+
+
 });
+
+
+
 
 
 
@@ -163,6 +175,43 @@ async function toggle_server(event){
 
     // x. Make server request to toggle
 
+
+}
+
+async function field_search(event){
+    /* xxx */
+
+    var container_div  = event.currentTarget.parentNode
+    console.log("Test: "+ container_div)
+
+    /* Clear notification box content */
+    var notification_box = container_div.nextElementSibling 
+    notification_box.textContent = ""
+
+    /* Check if all fields have been filled*/
+    var model = container_div.querySelector("#model_to_search").value
+    var model_id = container_div.querySelector("#model_id_to_search").value
+    var model_field = container_div.querySelector("#field_to_search").value
+    if (model.length === 0 || model_id.length === 0 || model_field.length === 0){
+        notification_box.textContent = "Please fill all required fields!"
+        return
+    }
+
+    // Make request to server to lookup field value
+    var raw_response = await fetch(
+        `${base_url}fieldLookup?model=${model}&id=${model_id}&field=${model_field}`)
+    console.log(`${base_url}fieldLookup?model=${model}&id=${model_id}&field=${model_field}`)
+    var json_response = await raw_response.json()  // Returns field data or error
+
+    // Branch depending on server response
+    // console.log(`Response: ${json_response.status}`)     //TESTING
+    if (json_response.status == 500){      // If error
+        notification_box.textContent = "Aw Shucks. Something went wrong."
+    } else if ("data" in json_response){   // If non-related field
+        notification_box.innerHTML = `<span id='success_message'>${model_field}</span>: ${json_response.data}`
+    } else {                               // If related field
+        notification_box.innerHTML = `<span id='success_message'>Model</span>: ${json_response.model}<br><span id='success_message'>ID</span>: ${json_response.id}`
+    }
 
 }
 
@@ -361,6 +410,73 @@ async function construct_reset_view_card(){
 
    // 7. Prepend article to section (This is what holds the card stack)
     document.querySelector(".card-list").prepend(article)
+
+}
+
+async function construct_field_search_card(){
+    /* Constructs field search card. */
+
+    // 1. Create article (primary shell) + add delete card event listener to it
+    var article = document.createElement('article');
+    article.className = 'card';
+    article.addEventListener('dblclick', function(event){delete_card(event)})
+
+    // 2. Create div (secondary shell)
+    var div = document.createElement("div");
+    article.appendChild(div)
+
+    // 3. Create Title block
+    var header = document.createElement("header");
+    header.className = 'card-header';
+    div.appendChild(header)
+    var p = document.createElement('p');
+    p.textContent = '# ' + document.querySelector('.card-list').childElementCount;
+    header.appendChild(p);
+    var h2 = document.createElement('h2');
+    h2.textContent = 'Field Search';
+    header.appendChild(h2)
+
+    // 4. Create input fields
+    var div_module = document.createElement('div');
+    div_module.id = 'field_lookup';
+    div.appendChild(div_module);
+
+    var input_model = document.createElement('input');
+    input_model.id = "model_to_search";
+    input_model.type = 'text'
+    input_model.placeholder = 'Model (i.e. purchase.order)'
+    div_module.appendChild(input_model);
+
+    var input_id = document.createElement('input');
+    input_id.id = "model_id_to_search";
+    input_id.type = 'text'
+    input_id.placeholder = 'ID (i.e. 666)'
+    div_module.appendChild(input_id);
+
+    var input_field = document.createElement('input');
+    input_field.id = "field_to_search";
+    input_field.type = 'text'
+    input_field.placeholder = 'Field (i.e. order_line)'
+    div_module.appendChild(input_field);
+
+    // 5. Create reset view button + add event listener
+    var button = document.createElement("button");
+    button.id = "field_search_button";
+    div_module.appendChild(button);
+    var h1 = document.createElement("h1");
+    h1.textContent = "Lookup";
+    button.appendChild(h1);
+    button.addEventListener('click', function(event){field_search(event)});
+
+   // 6. Create notification box
+   var div_notification = document.createElement("div")
+   div_notification.id = 'notification_box';
+   div_notification.textContent = '';
+   div.appendChild(div_notification);
+
+   // 7. Prepend article to section (This is what holds the card stack)
+    document.querySelector(".card-list").prepend(article)
+
 
 
 }
