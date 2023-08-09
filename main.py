@@ -87,7 +87,7 @@ def field_lookup():
 
     response = result
     if result["status"] == 200 and "Recordset" in str(result["data"]):
-        response = { "status": 200, "id": str(result["data"].id), "model": str(result["data"]._name) }
+        response = { "status": 200, "id": str(result["data"].ids), "model": str(result["data"]._name) }
     elif result["status"] == 200:
         response = {"status": 200, "data": result["data"]}
 

@@ -98,3 +98,18 @@ class OdooDemon(Flask):
         except Exception as e: 
             print(f"---Error: {e}")
             return {"status": 500}
+    
+
+    def test(self):
+        self.odoo.config['debug'] = True
+        self.odoo.config['logfile'] = '/logfile.log'
+        while True:
+            new_log = self.odoo.get_log()
+            if new_log:
+                for message in new_log:
+                    print(message)
+                    
+
+if __name__ == "__main__":
+    app = OdooDemon(__name__)
+    app.test()

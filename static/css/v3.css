@@ -9,6 +9,20 @@ body {
 }
 
 
+/* ----- TESTING ---------------------------------------- */
+#closecard{
+    width: 0px; 
+    height: 0px;
+    border-right: 35px solid rgb(174, 27, 152);
+    border-bottom: 35px solid transparent;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+
+
+
 /* ----- Title elements ---------------------------------------- */
 #title{
     width: 400px;
@@ -26,8 +40,8 @@ body {
     width: 30%;
 }
 #title > div:nth-child(2) > img{
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
 }
 #t1{
     color: #800080;
@@ -73,12 +87,12 @@ body {
 }
 /*Front card img*/
 #plus_card_img{  
-    padding: 50px;
+    padding: 10px;
     text-align: center;
 }
 #plus_card_img > img{
-    height: 150px;
-    width: 150px;
+    height: 250px;
+    width: 250px;
 }
 /*Back card (Command list)*/
 #command_list{

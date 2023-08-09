@@ -27,9 +27,11 @@ document.addEventListener('DOMContentLoaded', function(){
 async function delete_card(event){
     /*xxx*/
 
-    if (event.target.className == 'card'){
+    console.log("HELLO THERE")
+    if (event.target.id == 'closecard'){
         // 1. Remove selected card
-        event.target.remove()
+        var cardToRemove = event.currentTarget.parentNode
+        cardToRemove.remove()
 
         // 2. Update visible card # (Sets card labels from left to right, in desending order)
         var cards = document.querySelectorAll(".card")
@@ -172,14 +174,19 @@ async function field_search(event){
 async function construct_upgrade_module_card(){
     /*Constructs upgrade module card.*/
 
-    // 1. Create article (primary shell) + add delete card event listener to it
+    // 1. Create article (primary shell)
     var article = document.createElement('article');
     article.className = 'card';
-    article.addEventListener('dblclick', function(event){delete_card(event)})
 
     // 2. Create div (secondary shell)
     var div = document.createElement("div");
     article.appendChild(div)
+
+    // 2.x Create card closer + add delete card event listener to it
+    var closerDiv = document.createElement("div");
+    closerDiv.id = "closecard";
+    closerDiv.addEventListener('dblclick', function(event){delete_card(event)})
+    article.append(closerDiv)
 
     // 3. Create Title block
     var header = document.createElement("header");
@@ -231,11 +238,16 @@ async function construct_reset_view_card(){
     // 1. Create article (primary shell) + add delete card event listener to it
     var article = document.createElement('article');
     article.className = 'card';
-    article.addEventListener('dblclick', function(event){delete_card(event)})
 
     // 2. Create div (secondary shell)
     var div = document.createElement("div");
     article.appendChild(div)
+
+    // 2.x Create card closer + add delete card event listener to it
+    var closerDiv = document.createElement("div");
+    closerDiv.id = "closecard";
+    closerDiv.addEventListener('dblclick', function(event){delete_card(event)})
+    article.append(closerDiv)
 
     // 3. Create Title block
     var header = document.createElement("header");
@@ -286,11 +298,16 @@ async function construct_field_search_card(){
     // 1. Create article (primary shell) + add delete card event listener to it
     var article = document.createElement('article');
     article.className = 'card';
-    article.addEventListener('dblclick', function(event){delete_card(event)})
 
     // 2. Create div (secondary shell)
     var div = document.createElement("div");
     article.appendChild(div)
+
+    // 2.x Create card closer + add delete card event listener to it
+    var closerDiv = document.createElement("div");
+    closerDiv.id = "closecard";
+    closerDiv.addEventListener('dblclick', function(event){delete_card(event)})
+    article.append(closerDiv)
 
     // 3. Create Title block
     var header = document.createElement("header");
