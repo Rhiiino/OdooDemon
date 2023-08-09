@@ -1,5 +1,5 @@
 
 # My folders
 __pycache__/
-demonenv/
+venv/
 .env
